@@ -1,0 +1,35 @@
+doctype
+html
+    head
+        meta(charset='UTF-8')
+        title= title
+        meta(name='viewport' content='width=device-width, user-scalable=no')
+        meta(http-equiv='X-UA-Compatible' content='IE=edge')
+        link(rel='stylesheet' href='./main.css')
+    body
+        .container
+            .profile-wrap
+                if user && user.id
+                    user.name= 'Hello' + user.nick
+                    .half
+                        div Followings
+                            .count.following-count= user.Followings && user.Following.length || 0
+                    .half
+                        div Followers
+                            .count.follower-count= user.Followers && user.Followers.length || 0
+                    input#my-id(type='hidden' value=user.id)
+                    a#my-profile.btn(href='/profile') My Profile
+                    a#logout.btn(href='/auth/logout') Log out
+                else
+                    form#login-form(action='/auth/login' method='post')
+                        .input-group
+                            label(for='email') Email
+                            input#email(type='email' name='email' required autofocus)
+                        .input-group
+                            lable(for='password') Password
+                            input#password(type='password' name='password' required)
+                        if loginError
+                            .error-message= loginError
+                        a#join.btn(href='/join') Sign Up
+                        button#login.btn(type='submit') Log in
+            block content
