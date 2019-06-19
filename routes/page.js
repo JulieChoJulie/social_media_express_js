@@ -17,12 +17,13 @@ router.get('/join', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    res.render('join', {
+    res.render('main', {
         title: 'Main - Express',
         twits: [],
         user: null,
         loginError: req.flash('loginError'),
     });
 });
+
 
 module.exports = router;
