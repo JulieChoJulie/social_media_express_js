@@ -7,12 +7,7 @@ const { Post, Hashtag, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
-fs.readdir('uploads', (error) = {
-    if (error) {
-        console.error('Making a directory named uploads.');
-        fs.mkdirSync('uploads');
-    }
-});
+fs.mkdir( __dirname + 'uploads/', err => {});
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -32,7 +27,7 @@ router.post('/img', isLoggedIn, upload.single('img'), (req, res) => {
     res.json({ url: `/img/${req.file.filename}` });
 });
 
-const uploads2 = multer();
+const upload2 = multer();
 router.post('/', isLoggedIn, upload2.none(), async(req, res, next) => {
     try {
         const post = await Post.create({
