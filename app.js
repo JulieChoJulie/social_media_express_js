@@ -8,6 +8,8 @@ const passport = require('passport');
 require('dotenv').config();
 
 const pageRouter = require('./routes/page');
+const postRouter = require('./routes/post');
+const userRouter = require('./routes/user');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -21,6 +23,7 @@ app.set('port', process.env.PORT || 8002);
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/img', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -38,6 +41,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/', pageRouter);
+app.use('/user', userRouter);
+app.use('/post', postRouter);
+
+
 
 
 // 404 Error Handler
