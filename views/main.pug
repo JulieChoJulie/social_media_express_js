@@ -55,7 +55,8 @@ block content
             tag.addEventListener('click', function(){
                 var isLoggedIn = document.querySelector('#my-id');
                 if(isLoggedIn) {
-                    var userId = tag.parentNode.querySelector('.twit.user-id').value;
+                    var userId = this.parentNode.querySelector('.twit-user-id').value;
+                    console.log(userId);
                     var myId = isLoggedIn.value;
                     if (myId !== userId) {
                         if(confirm('Do you want to follow?')){

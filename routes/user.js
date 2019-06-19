@@ -3,7 +3,7 @@ const { User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 
-router.post('/:id', isLoggedIn, async (req, res, next) => {
+router.post('/:id/follow', isLoggedIn, async (req, res, next) => {
     try {
         const user = await User.findOne({ where: { id: req.user.id}});
         await user.addFollowing(parseInt(req.params.id, 10));
