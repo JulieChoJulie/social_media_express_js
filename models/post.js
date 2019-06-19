@@ -6,7 +6,7 @@ module.exports = (sequelize, Datatypes) => (
             unique: true,
         },
         img: {
-            type: Datatypes.STRING(15),
+            type: Datatypes.STRING(200),
             allowNull: false,
         },
     }, {

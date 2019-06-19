@@ -43,7 +43,7 @@ app.use(passport.session());
 
 app.use('/', pageRouter);
 app.use('/user', userRouter);
-app.use('/post', postRouter)
+app.use('/post', postRouter);
 app.use('/auth', authRouter);
 
 

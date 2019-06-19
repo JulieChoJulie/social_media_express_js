@@ -7,7 +7,12 @@ const { Post, Hashtag, User } = require('../models');
 const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
-fs.mkdir( __dirname + 'uploads/', err => {});
+fs.readdir('uploads', (err) => {
+    if (err) {
+        console.error('Create uploads folder');
+        fs.mkdirSync( 'uploads/', (err) => {console.error(err)});
+    }
+});
 
 const upload = multer({
     storage: multer.diskStorage({
@@ -19,7 +24,7 @@ const upload = multer({
             cb(null, path.basename(file.originalname, ext) + new Date().valueOf() + ext);
         },
     }),
-    limits: {fileSize: 5 * 1024 * 1024},
+    // limits: {fileSize: 5 * 1024 * 1024},
 });
 
 router.post('/img', isLoggedIn, upload.single('img'), (req, res) => {
