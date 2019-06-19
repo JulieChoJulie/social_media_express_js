@@ -1,4 +1,4 @@
-module.exports = (sequelize, Datatypes) => {
+module.exports = (sequelize, Datatypes) => (
     sequelize.define('post', {
         content: {
             type: Datatypes.STRING(40),
@@ -13,4 +13,4 @@ module.exports = (sequelize, Datatypes) => {
         timestamps: true,
         paranoid: true,
     })
-};
+);

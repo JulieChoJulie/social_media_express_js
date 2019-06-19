@@ -1,4 +1,4 @@
-module.exports = (sequelize, Datatypes) => {
+module.exports = (sequelize, Datatypes) => (
     sequelize.define('user', {
         email: {
             type: Datatypes.STRING(40),
@@ -26,4 +26,4 @@ module.exports = (sequelize, Datatypes) => {
         timestamps: true,
         paranoid: true,
     })
-};
+);
