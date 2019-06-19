@@ -12,4 +12,4 @@ exports.isNotLoggedIn = (req, res, next) => {
     } else {
         res.redirect('/')
     }
-}
+};
