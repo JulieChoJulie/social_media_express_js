@@ -10,6 +10,7 @@ require('dotenv').config();
 const pageRouter = require('./routes/page');
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
+const authRouter = require('./routes/auth');
 const { sequelize } = require('./models');
 const passportConfig = require('./passport');
 
@@ -42,7 +43,9 @@ app.use(passport.session());
 
 app.use('/', pageRouter);
 app.use('/user', userRouter);
-app.use('/post', postRouter);
+app.use('/post', postRouter)
+app.use('/auth', authRouter);
+
 
 
 
