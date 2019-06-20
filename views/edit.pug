@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    .timeline
+        form#edit-form(action='/auth/edit' method='post')
+            .input-group
+                lable(for='edit-email') Email
+                input#edit-email(type='email' name='email' placeholder=user.email)
+            .input-group
+                label(for='edit-nick') Nickname
+                input#edit-nick(type='text' name='nick' placeholder=user.nick)
+            .input-group
+                lable(for='edit-password') Password
+                input#edit-password(type='password' name='password' placeholder=user.password)
+            if editError
+                .error-message= editError
+            button#edit-btn.btn(type='submit') Edit
+            a.btn(href='/profile') Cancel

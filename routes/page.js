@@ -10,6 +10,14 @@ router.get('/profile', isLoggedIn, (req, res) => {
     })
 });
 
+router.get('/edit', isLoggedIn, (req, res) => {
+    res.render('edit', {
+        title: 'My Profile - Express',
+        user: req.user,
+        editError: req.flash('editError'),
+    })
+});
+
 router.get('/join', isNotLoggedIn, (req, res) => {
     res.render('join', {
         title: 'Join - Express',

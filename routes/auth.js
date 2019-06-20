@@ -55,4 +55,28 @@ router.get('/logout', isLoggedIn, (req, res) => {
     res.redirect('/');
 });
 
+router.post('/edit', isLoggedIn, async (req, res, next) => {
+    const { email, nick, password } = req.body;
+    try {
+        const user = await User.findOne({ where: { id: req.user.id}});
+        const exUser = await User.findOne({ where: { email }});
+        if (!exUser || exUser.email === user.email){
+            const hash = await bcrypt.hash(password, 12);
+            user.update({
+                email,
+                nick,
+                password: hash
+            });
+            res.redirect('/profile');
+        } else if (exUser){
+            req.flash('editError', 'The entered email is already in use');
+            res.redirect('/edit');
+        }
+
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+});
+
 module.exports = router;
