@@ -17,6 +17,8 @@ module.exports = (passport) => {
                 } else {
                     done(null, false, { message: 'The entered password does not match with the email.'});
                 }
+            } else {
+                done(null, false, {message: 'The entered email is not in our system.'})
             }
         } catch (error) {
             console.error(error);
