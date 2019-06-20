@@ -17,6 +17,8 @@ db.User.hasMany(db.Post);
 db.Post.belongsTo(db.User);
 db.Post.belongsToMany(db.Hashtag, { through: 'PostHashtag' });
 db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
+
+
 db.User.belongsToMany(db.User, {
   foreignKey: 'followingId',
   as: 'Followers',
