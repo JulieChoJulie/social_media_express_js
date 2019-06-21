@@ -7,9 +7,7 @@ const router = express.Router();
 router.get('/', (req, res, next) => {
     User.find({
         where: { id: req.user && req.user.id },
-        include: {
-            model: Domain,
-        }
+        include: { model: Domain },
     })
         .then((user) => {
             res.render('login', {
@@ -23,18 +21,19 @@ router.get('/', (req, res, next) => {
         });
 });
 
-router.poster('/domain', (req, res, next) => {
+router.post('/domain', (req, res, next) => {
     Domain.create({
         userId: req.user.id,
         host: req.body.host,
         type: req.body.type,
-        clientSecret: uudiv4(),
-    }).then(() => {
-        res.redirect('/');
+        clientSecret: uuidv4(),
     })
+        .then(() => {
+            res.redirect('/');
+        })
         .catch((error) => {
             next(error);
-        })
+        });
 });
 
 module.exports = router;
