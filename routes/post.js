@@ -64,7 +64,17 @@ router.get('/hashtag', async(req, res, next) => {
         const hashtag = await Hashtag.findOne({ where: { title: query }});
         let posts = [];
         if (hashtag) {
-            posts = await hashtag.getPosts({ include: [{ model: User }] });
+            posts = await hashtag.getPosts({
+                include: [{
+                    model: User,
+                    attribute: ['id', 'nick'],
+                }, {
+                    model: User,
+                    attribute: ['id', 'nick'],
+                    as: 'Liker',
+                }],
+                order: [['createdAt', 'DESC']],
+            });
         }
         return res.render('main', {
             title: `${query} | Express`,
@@ -76,5 +86,30 @@ router.get('/hashtag', async(req, res, next) => {
         next(error);
     }
 });
+
+router.post('/:id/like', async (req, res, next) => {
+    try {
+        const post = await Post.findOne({ where: { id: req.params.id }});
+        await post.addLiker(req.user.id);
+        res.send('success');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+router.delete('/:id/like', async (req, res, next) => {
+    try {
+        const post = await Post.findOne({ where: { id: req.params.id}});
+        console.log(post.Liker);
+        await post.removeLiker(req.user.id);
+        res.send('success');
+    } catch (error) {
+        console.error(error);
+        next(error);
+    }
+});
+
+
 
 module.exports = router;

@@ -7,7 +7,7 @@ router.get('/profile', isLoggedIn, (req, res) => {
     res.render('profile', {
         title: 'My Profile - Express',
         user: req.user,
-    })
+    });
 });
 
 router.get('/edit', isLoggedIn, (req, res) => {
@@ -26,12 +26,16 @@ router.get('/join', isNotLoggedIn, (req, res) => {
     })
 });
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     Post.findAll({
-        include: {
+        include: [{
             model: User,
             attribute: ['id', 'nick'],
-        },
+        }, {
+            model: User,
+            attribute: ['id', 'nick'],
+            as: 'Liker',
+        }],
         order: [['createdAt', 'DESC']],
     })
         .then((posts) => {

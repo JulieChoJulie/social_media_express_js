@@ -25,4 +25,5 @@ router.post('/:id/unfollow', isLoggedIn, async (req, res, next) => {
     }
 });
 
+
 module.exports = router;

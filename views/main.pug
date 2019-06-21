@@ -28,12 +28,17 @@ block content
                             button.twit-follow Follow
                         if user && user.id !== twit.user.id && follow
                             button.twit-unfollow Unfollow
+                        -const like = twit && twit.Liker.map(t => t.id).includes(user.id);
+                        if user && !like
+                            button.twit-like Like
+                        else if user && like
+                            button.twit-unlike Unlike
                         .twit-content= twit.content
                         if twit.img
                             .twit-img
                                 img(src=twit.img alt='Thumbnail')
     script.
-        if (document.getElementById('img')) {
+        if(document.getElementById('img')) {
             document.getElementById('img').addEventListener('change', function(e) {
                 var formData = new FormData();
                 console.log(this, this.files);
@@ -83,7 +88,6 @@ block content
                 var isLoggedIn = document.querySelector('#my-id');
                 if (isLoggedIn) {
                     var userId = this.parentNode.querySelector('.twit-user-id').value;
-                    console.log(userId);
                     var myId = isLoggedIn.value;
                     if (myId !== userId) {
                         if (confirm('Do you want to unfollow?')) {
@@ -99,6 +103,44 @@ block content
                             xhr.send();
                         }
                     }
+                }
+            })
+        });
+
+        document.querySelectorAll('.twit-like').forEach(function (tag) {
+            tag.addEventListener('click', function () {
+                var isLoggedIn = document.querySelector('#my-id');
+                if (isLoggedIn) {
+                    var twitId = this.parentNode.querySelector('.twit-id').value;
+                    var xhr = new XMLHttpRequest();
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            location.reload();
+                        } else {
+                            console.error(xhr.responseText);
+                        }
+                    };
+                    xhr.open('POST', '/post/' + twitId + '/like');
+                    xhr.send();
+                }
+            })
+        });
+
+        document.querySelectorAll('.twit-unlike').forEach(function (tag) {
+            tag.addEventListener('click', function () {
+                var isLoggedIn = document.querySelector('#my-id');
+                if (isLoggedIn) {
+                    var twitId = this.parentNode.querySelector('.twit-id').value;
+                    var xhr = new XMLHttpRequest();
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            location.reload();
+                        } else {
+                            console.error(xhr.responseText);
+                        }
+                    };
+                    xhr.open('DELETE', '/post/' + twitId + '/like');
+                    xhr.send();
                 }
             })
         });
