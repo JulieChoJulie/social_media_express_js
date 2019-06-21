@@ -34,8 +34,8 @@ exports.verifyToken = (req, res, next) => {
     }
 };
 
-const RateLimit = require('express-limit-rate');
-exports.apiLimiter = neew RateLimit({
+const RateLimit = require('express-rate-limit');
+exports.apiLimiter = new RateLimit({
     windowMs: 60 * 1000,
     max: 1,
     delayMs: 0,
