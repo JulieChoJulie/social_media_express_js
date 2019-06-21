@@ -25,15 +25,14 @@ router.post('/token', async (req, res) => {
         // Issue a token
         const token = jwt.sign({
             id: domain.user.id,
-            nick: domain.user.nick
+            nick: domain.user.nick,
         }, process.env.JWT_SECRET, {
             expiresIn: '1m',
             issuer: 'express',
         });
-
         return res.json({
             code: 200,
-            message: 'Token has been issued.',
+            message: 'A token has been issued.',
             token,
         });
     } catch (error) {
@@ -49,3 +48,46 @@ router.post('/token', async (req, res) => {
 router.get('/test', verifyToken, (req, res) => {
     res.json(req.decoded);
 });
+
+
+router.get('/posts/my', verifyToken, (req, res) => {
+    Post.findAll({ where: { id: req.decoded.id } })
+        .then((posts) => {
+            res.json({
+                code: 200,
+                payload: posts,
+            });
+        })
+        .catch((error) => {
+        console.log(error);
+        return res.status(500).json({
+            code: 500,
+            message: 'Server Error',
+        });
+    });
+});
+
+router.get('/posts/hashtag/:title', verifyToken, async (req, res) => {
+    try {
+        const hashtag = await Hashtag.findOne({ where: { title: req.params.title } });
+        if (!hashtag) {
+            return res.status(404).json({
+                code: 404,
+                message: 'No hashtag found',
+            })
+        }
+        const posts = await hashtag.getPosts();
+        return res.json({
+            code: 200,
+            message: posts,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            code: 500,
+            message: 'Server Error',
+        });
+    }
+});
+
+module.exports = router;
