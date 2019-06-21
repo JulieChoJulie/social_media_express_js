@@ -33,6 +33,8 @@ block content
                             button.twit-like Like
                         else if user && like
                             button.twit-unlike Unlike
+                        if user && user.id === twit.user.id
+                            button.twit-delete Delete
                         .twit-content= twit.content
                         if twit.img
                             .twit-img
@@ -140,6 +142,25 @@ block content
                         }
                     };
                     xhr.open('DELETE', '/post/' + twitId + '/like');
+                    xhr.send();
+                }
+            })
+        });
+
+        document.querySelectorAll('.twit-delete').forEach(function (tag) {
+            tag.addEventListener('click', function () {
+                var isLoggedIn = document.querySelector('#my-id');
+                if (isLoggedIn) {
+                    var twitId = this.parentNode.querySelector('.twit-id').value;
+                    var xhr = new XMLHttpRequest();
+                    xhr.onload = function () {
+                        if (xhr.status === 200) {
+                            location.reload();
+                        } else {
+                            console.error(xhr.responseText);
+                        }
+                    };
+                    xhr.open('DELETE', '/post/' + twitId + '/delete');
                     xhr.send();
                 }
             })
