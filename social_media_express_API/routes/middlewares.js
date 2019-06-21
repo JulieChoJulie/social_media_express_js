@@ -33,3 +33,23 @@ exports.verifyToken = (req, res, next) => {
         });
     }
 };
+
+const RateLimit = require('express-limit-rate');
+exports.apiLimiter = neew RateLimit({
+    windowMs: 60 * 1000,
+    max: 1,
+    delayMs: 0,
+    handler (req, res) {
+        res.status(this.statusCode).json({
+            code: this.statusCode,
+            message: 'Max 1 request per a minute.',
+        });
+    },
+});
+
+exports.deprecated = (req, res) => {
+    res.status(410).json({
+        code: 410,
+        message: 'The new version has been released. Please use the new version.',
+    });
+};
