@@ -1,0 +1,49 @@
+doctype
+html
+    head
+        meta(charset='utf-8')
+        title Express Login
+        style.
+            .input-group label {
+                width: 200px;
+                display: inline-block;
+            }
+    body
+        if user && user.id
+            span.user-name= 'Hello, ' + user.nick
+            a(href='/auth/logout'): button Logout
+            fieldset
+                legend Domain Register
+                form(action='/domain' method='post')
+                    div
+                        label(for='type-free') Free
+                        input#type-free(type='radio' name='type' value='free')
+                        label(for='type-premium') Premium
+                        input#type-premium(type='radio' name='type' value='premium')
+                    div
+                        label(for='host') Domain
+                        input#host(name='host' placeholder="ex) google.com")
+                    button Save
+            table
+                tr
+                    th Domain address
+                    th Type
+                    th Client secret key
+                for domain in user.domains
+                    tr
+                        td= domain.host
+                        td= domain.type
+                        td= domain.clientSecret
+        else
+            form#login-form(action='/auth/login' method='post')
+                h2 Login with your express account
+                .input-group
+                    label(for='email') Email
+                    input#email(type='email' name='email' required autofocus)
+                .input-group
+                    label(for='password') Password
+                    input#password(type='password' name='password' required)
+                if loginError
+                    .error-message= loginError
+                a(href='/join'): button#join(type='button') Sign up
+                button#login(type='submit') Log in
